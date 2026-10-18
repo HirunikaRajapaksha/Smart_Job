@@ -1,0 +1,639 @@
+[{
+  "_id": {
+    "$oid": "6ad44e75c44a81203e4e61a6"
+  },
+  "jobName": "Full Stack Web Developer",
+  "company": "Virtusa Sri Lanka",
+  "category": "Technology",
+  "salary": 160000,
+  "location": "Colombo",
+  "description": "Looking for an energetic React & Node.js developer to build responsive web applications and scalable REST APIs.",
+  "jobType": "Full-time",
+  "postedBy": "",
+  "postedByEmail": "",
+  "postedByNic": "",
+  "postedByName": "",
+  "applications": [],
+  "createdAt": {
+    "$date": "2026-10-18T04:43:33.850Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-18T04:43:33.850Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6ad44e75c44a81203e4e61a9"
+  },
+  "jobName": "Junior Software Engineer",
+  "company": "Gampaha Tech Hub",
+  "category": "Technology",
+  "salary": 95000,
+  "location": "Gampaha",
+  "description": "Develop REST APIs and assist in client integrations with modern JavaScript and cloud tools.",
+  "jobType": "Full-time",
+  "postedBy": "",
+  "postedByEmail": "",
+  "postedByNic": "",
+  "postedByName": "",
+  "applications": [],
+  "createdAt": {
+    "$date": "2026-10-18T04:43:33.923Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-18T04:43:33.923Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6ad4781dfee424007ce6e8d4"
+  },
+  "jobName": "UI/UX Product Designer",
+  "company": "Creative Lanka Tech",
+  "category": "Design",
+  "salary": 110000,
+  "location": "Kandy",
+  "description": "Design mobile apps and web platforms using Figma, wireframing, and modern design systems.",
+  "jobType": "Full-time",
+  "postedBy": "",
+  "postedByEmail": "",
+  "postedByNic": "",
+  "postedByName": "",
+  "applications": [],
+  "createdAt": {
+    "$date": "2026-10-18T07:41:17.471Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-18T07:41:17.471Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6ad4781dfee424007ce6e8d5"
+  },
+  "jobName": "Digital Marketing Specialist",
+  "company": "Southern Media Works",
+  "category": "Marketing",
+  "salary": 85000,
+  "location": "Galle",
+  "description": "Lead SEO, PPC, and social media campaigns for national and international clients.",
+  "jobType": "Remote",
+  "postedBy": "",
+  "postedByEmail": "",
+  "postedByNic": "",
+  "postedByName": "",
+  "applications": [],
+  "createdAt": {
+    "$date": "2026-10-18T07:41:17.477Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-18T07:41:17.477Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6ad4781dfee424007ce6e8d6"
+  },
+  "jobName": "Accounts Executive",
+  "company": "Wayamba Trading Ltd",
+  "category": "Finance",
+  "salary": 75000,
+  "location": "Kurunegala",
+  "description": "Manage accounts payable/receivable, financial statements, bank reconciliations and VAT filings.",
+  "jobType": "Full-time",
+  "postedBy": "",
+  "postedByEmail": "",
+  "postedByNic": "",
+  "postedByName": "",
+  "applications": [],
+  "createdAt": {
+    "$date": "2026-10-18T07:41:17.487Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-18T07:41:17.487Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6ad4781dfee424007ce6e8d7"
+  },
+  "jobName": "Senior QA Automation Engineer",
+  "company": "Apex Tech Solutions",
+  "category": "Engineering",
+  "salary": 145000,
+  "location": "Colombo",
+  "description": "Build automated test suites for web and mobile platforms using Cypress, Jest, and CI/CD pipelines.",
+  "jobType": "Full-time",
+  "postedBy": "",
+  "postedByEmail": "",
+  "postedByNic": "",
+  "postedByName": "",
+  "applications": [],
+  "createdAt": {
+    "$date": "2026-10-18T07:41:17.494Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-18T07:41:17.494Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6ad47997f102e214d8ae9a8f"
+  },
+  "jobName": "Security Officer",
+  "company": "Samanala Security Services",
+  "category": "Security",
+  "salary": 65000,
+  "location": "Matara",
+  "description": "Responsible for protecting property, monitoring security systems, and maintaining safety.",
+  "jobType": "Full-time",
+  "postedBy": "",
+  "postedByEmail": "",
+  "postedByNic": "",
+  "postedByName": "",
+  "applications": [],
+  "createdAt": {
+    "$date": "2026-10-18T07:47:35.062Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-18T07:47:35.062Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6ad47997f102e214d8ae9a90"
+  },
+  "jobName": "Cashier",
+  "company": "Cargills Food City",
+  "category": "Retail",
+  "salary": 55000,
+  "location": "Galle",
+  "description": "Handle customer payments, operate the cash register, and provide friendly customer service.",
+  "jobType": "Full-time",
+  "postedBy": "",
+  "postedByEmail": "",
+  "postedByNic": "",
+  "postedByName": "",
+  "applications": [],
+  "createdAt": {
+    "$date": "2026-10-18T07:47:35.068Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-18T07:47:35.068Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6ad47997f102e214d8ae9a91"
+  },
+  "jobName": "Sales Assistant",
+  "company": "Keells Super",
+  "category": "Sales",
+  "salary": 50000,
+  "location": "Matara",
+  "description": "Assist customers, arrange products, and support daily sales activities.",
+  "jobType": "Full-time",
+  "postedBy": "",
+  "postedByEmail": "",
+  "postedByNic": "",
+  "postedByName": "",
+  "applications": [],
+  "createdAt": {
+    "$date": "2026-10-18T07:47:35.072Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-18T07:47:35.072Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6ad47997f102e214d8ae9a92"
+  },
+  "jobName": "Receptionist",
+  "company": "Asiri Hospital",
+  "category": "Administration",
+  "salary": 60000,
+  "location": "Colombo",
+  "description": "Welcome visitors, answer phone calls, schedule appointments, and manage reception duties.",
+  "jobType": "Full-time",
+  "postedBy": "",
+  "postedByEmail": "",
+  "postedByNic": "",
+  "postedByName": "",
+  "applications": [],
+  "createdAt": {
+    "$date": "2026-10-18T07:47:35.075Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-18T07:47:35.075Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6ad47997f102e214d8ae9a93"
+  },
+  "jobName": "Nurse",
+  "company": "Lanka Hospitals",
+  "category": "Healthcare",
+  "salary": 85000,
+  "location": "Colombo",
+  "description": "Provide patient care, monitor health conditions, and assist doctors with medical procedures. Relevant nursing qualifications required.",
+  "jobType": "Full-time",
+  "postedBy": "",
+  "postedByEmail": "",
+  "postedByNic": "",
+  "postedByName": "",
+  "applications": [],
+  "createdAt": {
+    "$date": "2026-10-18T07:47:35.080Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-18T07:47:35.080Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6ad47997f102e214d8ae9a94"
+  },
+  "jobName": "School Teacher",
+  "company": "Private International School",
+  "category": "Education",
+  "salary": 65000,
+  "location": "Galle",
+  "description": "Prepare lessons, teach students, assess progress, and maintain a positive learning environment.",
+  "jobType": "Full-time",
+  "postedBy": "",
+  "postedByEmail": "",
+  "postedByNic": "",
+  "postedByName": "",
+  "applications": [],
+  "createdAt": {
+    "$date": "2026-10-18T07:47:35.083Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-18T07:47:35.083Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6ad47997f102e214d8ae9a95"
+  },
+  "jobName": "Park Attendant",
+  "company": "Samanala Park",
+  "category": "Tourism",
+  "salary": 45000,
+  "location": "Matara",
+  "description": "Assist visitors, maintain park cleanliness, and help ensure a safe and enjoyable environment.",
+  "jobType": "Full-time",
+  "postedBy": "",
+  "postedByEmail": "",
+  "postedByNic": "",
+  "postedByName": "",
+  "applications": [],
+  "createdAt": {
+    "$date": "2026-10-18T07:47:35.087Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-18T07:47:35.087Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6ad47997f102e214d8ae9a96"
+  },
+  "jobName": "Delivery Rider",
+  "company": "PickMe",
+  "category": "Delivery",
+  "salary": 70000,
+  "location": "Colombo",
+  "description": "Deliver orders safely and on time, follow assigned routes, and provide good customer service.",
+  "jobType": "Full-time",
+  "postedBy": "",
+  "postedByEmail": "",
+  "postedByNic": "",
+  "postedByName": "",
+  "applications": [],
+  "createdAt": {
+    "$date": "2026-10-18T07:47:35.091Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-18T07:47:35.091Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6ad47997f102e214d8ae9a97"
+  },
+  "jobName": "Office Assistant",
+  "company": "Commercial Bank",
+  "category": "Administration",
+  "salary": 50000,
+  "location": "Matara",
+  "description": "Support daily office activities, organize documents, handle basic administrative tasks, and assist staff.",
+  "jobType": "Full-time",
+  "postedBy": "",
+  "postedByEmail": "",
+  "postedByNic": "",
+  "postedByName": "",
+  "applications": [
+    {
+      "applicantName": "Dinuka viduranga",
+      "email": "kasun.perera@gmail.com",
+      "telephone": "077 123 4567",
+      "notes": "",
+      "cvFileName": "",
+      "cvData": "",
+      "_id": {
+        "$oid": "6ad48dda09955f2ffdd3f8be"
+      },
+      "appliedAt": {
+        "$date": "2026-10-18T09:14:02.923Z"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-10-18T07:47:35.096Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-18T09:14:02.928Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "6ad47997f102e214d8ae9a98"
+  },
+  "jobName": "Hotel Receptionist",
+  "company": "Jetwing Hotels",
+  "category": "Hospitality",
+  "salary": 60000,
+  "location": "Galle",
+  "description": "Welcome guests, manage reservations, handle check-ins and check-outs, and provide guest assistance.",
+  "jobType": "Full-time",
+  "postedBy": "",
+  "postedByEmail": "",
+  "postedByNic": "",
+  "postedByName": "",
+  "applications": [],
+  "createdAt": {
+    "$date": "2026-10-18T07:47:35.099Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-18T07:47:35.099Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6ad47997f102e214d8ae9a99"
+  },
+  "jobName": "Driver",
+  "company": "Private Transport Company",
+  "category": "Transport",
+  "salary": 65000,
+  "location": "Colombo",
+  "description": "Transport passengers or goods safely, maintain the vehicle, and follow traffic regulations. A valid driving licence is required.",
+  "jobType": "Full-time",
+  "postedBy": "",
+  "postedByEmail": "",
+  "postedByNic": "",
+  "postedByName": "",
+  "applications": [],
+  "createdAt": {
+    "$date": "2026-10-18T07:47:35.102Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-18T07:47:35.102Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6ad47997f102e214d8ae9a9a"
+  },
+  "jobName": "Banking Assistant",
+  "company": "People's Bank",
+  "category": "Banking",
+  "salary": 75000,
+  "location": "Galle",
+  "description": "Assist customers with banking services, maintain records, and support daily branch operations.",
+  "jobType": "Full-time",
+  "postedBy": "",
+  "postedByEmail": "",
+  "postedByNic": "",
+  "postedByName": "",
+  "applications": [],
+  "createdAt": {
+    "$date": "2026-10-18T07:47:35.105Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-18T07:47:35.105Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6ad47997f102e214d8ae9a9b"
+  },
+  "jobName": "Cleaner",
+  "company": "City Cleaning Services",
+  "category": "Cleaning",
+  "salary": 40000,
+  "location": "Matara",
+  "description": "Maintain cleanliness and hygiene in offices, buildings, and other assigned areas.",
+  "jobType": "Full-time",
+  "postedBy": "",
+  "postedByEmail": "",
+  "postedByNic": "",
+  "postedByName": "",
+  "applications": [],
+  "createdAt": {
+    "$date": "2026-10-18T07:47:35.109Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-18T07:47:35.109Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6ad47997f102e214d8ae9a9c"
+  },
+  "jobName": "Electrician",
+  "company": "Lanka Electrical Services",
+  "category": "Technical",
+  "salary": 80000,
+  "location": "Colombo",
+  "description": "Install, inspect, and repair electrical systems while following safety standards.",
+  "jobType": "Full-time",
+  "postedBy": "",
+  "postedByEmail": "",
+  "postedByNic": "",
+  "postedByName": "",
+  "applications": [],
+  "createdAt": {
+    "$date": "2026-10-18T07:47:35.112Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-18T07:47:35.112Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6ad47aa7ccc4905e6fd1365d"
+  },
+  "jobName": "Graphic Designer",
+  "company": "Creative Studio",
+  "category": "Design",
+  "salary": 75000,
+  "location": "Remote",
+  "description": "Create attractive graphics, social media posts, banners, and marketing materials using design software.",
+  "jobType": "Remote",
+  "postedBy": "",
+  "postedByEmail": "",
+  "postedByNic": "",
+  "postedByName": "",
+  "applications": [],
+  "createdAt": {
+    "$date": "2026-10-18T07:52:07.417Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-18T07:52:07.417Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6ad47aa7ccc4905e6fd1365e"
+  },
+  "jobName": "Data Entry Operator",
+  "company": "Online Services Lanka",
+  "category": "Administration",
+  "salary": 45000,
+  "location": "Remote",
+  "description": "Enter, update, and maintain accurate information in computer systems. Basic computer skills are required.",
+  "jobType": "Remote",
+  "postedBy": "",
+  "postedByEmail": "",
+  "postedByNic": "",
+  "postedByName": "",
+  "applications": [],
+  "createdAt": {
+    "$date": "2026-10-18T07:52:07.423Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-18T07:52:07.423Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6ad47aa7ccc4905e6fd1365f"
+  },
+  "jobName": "Software Engineering Intern",
+  "company": "Tech Solutions",
+  "category": "Technology",
+  "salary": 35000,
+  "location": "Moratuwa",
+  "description": "Assist the development team with coding, testing, debugging, and learning modern software development practices.",
+  "jobType": "Internship",
+  "postedBy": "",
+  "postedByEmail": "",
+  "postedByNic": "",
+  "postedByName": "",
+  "applications": [],
+  "createdAt": {
+    "$date": "2026-10-18T07:52:07.427Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-18T07:52:07.427Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6ad47aa7ccc4905e6fd13660"
+  },
+  "jobName": "Restaurant Helper",
+  "company": "Local Restaurant",
+  "category": "Hospitality",
+  "salary": 40000,
+  "location": "Nuwara Eliya",
+  "description": "Help prepare the dining area, support kitchen staff, and maintain cleanliness and customer service standards.",
+  "jobType": "Part-time",
+  "postedBy": "",
+  "postedByEmail": "",
+  "postedByNic": "",
+  "postedByName": "",
+  "applications": [],
+  "createdAt": {
+    "$date": "2026-10-18T07:52:07.430Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-18T07:52:07.430Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6ad47aa7ccc4905e6fd13661"
+  },
+  "jobName": "Content Writer",
+  "company": "Digital Media Agency",
+  "category": "Media",
+  "salary": 60000,
+  "location": "Remote",
+  "description": "Write engaging website content, blog articles, and social media posts with clear grammar and original ideas.",
+  "jobType": "Remote",
+  "postedBy": "",
+  "postedByEmail": "",
+  "postedByNic": "",
+  "postedByName": "",
+  "applications": [],
+  "createdAt": {
+    "$date": "2026-10-18T07:52:07.433Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-18T07:52:07.433Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6ad47c897a343817b10e605b"
+  },
+  "jobName": "Bank Manager",
+  "company": "Bank of Ceylon",
+  "category": "Banking",
+  "salary": 150000,
+  "location": "Colombo",
+  "description": "A degree in Banking, Finance, Business Administration, or Management, along with relevant banking experience and leadership skills.",
+  "jobType": "Full-time",
+  "postedBy": "",
+  "postedByEmail": "",
+  "postedByNic": "",
+  "postedByName": "",
+  "applications": [],
+  "createdAt": {
+    "$date": "2026-10-18T08:00:09.382Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-18T08:00:09.382Z"
+  },
+  "__v": 0
+}]

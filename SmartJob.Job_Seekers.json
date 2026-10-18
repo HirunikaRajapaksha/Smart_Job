@@ -1,0 +1,81 @@
+[{
+  "_id": {
+    "$oid": "6ad4770ffee424007ce6e8cb"
+  },
+  "jobId": "6ad44e75c44a81203e4e61ab",
+  "jobName": "Senior QA Automation Engineer",
+  "company": "Apex Tech Solutions",
+  "location": "Colombo",
+  "applicantName": "Nuwan Pradeep",
+  "email": "nuwan.pradeep@gmail.com",
+  "telephone": "077 123 4567",
+  "notes": "",
+  "cvFileName": "",
+  "cvData": "",
+  "applicantNic": "google-nuwan.pradeep@gmail.com",
+  "applicantUserId": "google-nuwan.pradeep@gmail.com",
+  "appliedAt": {
+    "$date": "2026-10-18T07:36:47.458Z"
+  },
+  "createdAt": {
+    "$date": "2026-10-18T07:36:47.459Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-18T07:36:47.459Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6ad47738fee424007ce6e8d1"
+  },
+  "jobId": "6ad44e75c44a81203e4e61aa",
+  "jobName": "Accounts Executive",
+  "company": "Wayamba Trading Ltd",
+  "location": "Kurunegala",
+  "applicantName": "Dinuka viduranga",
+  "email": "nuwan.pradeep@gmail.com",
+  "telephone": "077 123 4567",
+  "notes": "",
+  "cvFileName": "",
+  "cvData": "",
+  "applicantNic": "google-nuwan.pradeep@gmail.com",
+  "applicantUserId": "google-nuwan.pradeep@gmail.com",
+  "appliedAt": {
+    "$date": "2026-10-18T07:37:28.604Z"
+  },
+  "createdAt": {
+    "$date": "2026-10-18T07:37:28.604Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-18T07:37:28.604Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6ad48dda09955f2ffdd3f8bf"
+  },
+  "jobId": "6ad47997f102e214d8ae9a97",
+  "jobName": "Office Assistant",
+  "company": "Commercial Bank",
+  "location": "Matara",
+  "applicantName": "Dinuka viduranga",
+  "email": "kasun.perera@gmail.com",
+  "telephone": "077 123 4567",
+  "notes": "",
+  "cvFileName": "",
+  "cvData": "",
+  "applicantNic": "google-kasun.perera@gmail.com",
+  "applicantUserId": "google-kasun.perera@gmail.com",
+  "appliedAt": {
+    "$date": "2026-10-18T09:14:02.940Z"
+  },
+  "createdAt": {
+    "$date": "2026-10-18T09:14:02.940Z"
+  },
+  "updatedAt": {
+    "$date": "2026-10-18T09:14:02.940Z"
+  },
+  "__v": 0
+}]
