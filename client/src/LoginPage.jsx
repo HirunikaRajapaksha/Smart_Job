@@ -9,18 +9,11 @@ import {
   AlertCircle,
   ShieldCheck,
   X,
-  PlusCircle,
-  User
 } from "lucide-react";
 import logoImg from "./assets/Logo.png";
 import { loginUser, registerUser } from "./services/api";
+import AppleSignIn from "./AppleSignIn";
 import "./LoginPage.css";
-
-const DEFAULT_GOOGLE_ACCOUNTS = [
-  { name: "Kasun Perera", email: "kasun.perera@gmail.com" },
-  { name: "Nuwan Pradeep", email: "nuwan.pradeep@gmail.com" },
-  { name: "Dilshan Fernando", email: "dilshan.fernando@gmail.com" },
-];
 
 export default function LoginPage({
   onLoginSuccess,
@@ -34,21 +27,11 @@ export default function LoginPage({
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
-  // Google Account Chooser State
-  const [isGoogleChooserOpen, setIsGoogleChooserOpen] = useState(false);
-  const [showCustomGoogleForm, setShowCustomGoogleForm] = useState(false);
-  const [customGoogleEmail, setCustomGoogleEmail] = useState("");
-  const [customGoogleName, setCustomGoogleName] = useState("");
+  // Google OAuth state
+  const [googleLoading, setGoogleLoading] = useState(false);
 
-  // Saved accounts from localStorage
-  const [savedGoogleAccounts, setSavedGoogleAccounts] = useState(() => {
-    try {
-      const stored = localStorage.getItem("smartjob_saved_google_accounts");
-      return stored ? JSON.parse(stored) : DEFAULT_GOOGLE_ACCOUNTS;
-    } catch {
-      return DEFAULT_GOOGLE_ACCOUNTS;
-    }
-  });
+  // Apple Sign-In modal state
+  const [showAppleSignIn, setShowAppleSignIn] = useState(false);
 
   useEffect(() => {
     if (initialRole) {
@@ -81,7 +64,7 @@ export default function LoginPage({
     const emailOrNic = loginData.email.trim();
 
     try {
-      // Attempt backend API login
+      // Attempt backend API login — password is verified server-side with bcrypt
       const response = await loginUser({
         email: emailOrNic,
         nic: emailOrNic,
@@ -89,10 +72,10 @@ export default function LoginPage({
       });
 
       const user = {
-        id: response?.user?.id || "u-" + Date.now(),
-        name: response?.user?.name || (emailOrNic.includes("@") ? emailOrNic.split("@")[0] : emailOrNic),
-        email: response?.user?.email || (emailOrNic.includes("@") ? emailOrNic : `${emailOrNic}@smartjob.lk`),
-        nic: response?.user?.nic || emailOrNic,
+        id: response?.user?.id,
+        name: response?.user?.name,
+        email: response?.user?.email || emailOrNic,
+        nic: response?.user?.nic,
         role: selectedRole,
         address: response?.user?.address || "Colombo, Sri Lanka",
         telephone: response?.user?.telephone || "",
@@ -103,26 +86,12 @@ export default function LoginPage({
         onLoginSuccess(user);
       }, 500);
     } catch (err) {
-      if (err.message && err.message.toLowerCase().includes("invalid")) {
-        setErrorMessage(err.message);
+      // Always block login on any error — never bypass password check
+      const msg = err?.message || "";
+      if (msg) {
+        setErrorMessage(msg);
       } else {
-        // High-availability fallback when backend is offline
-        // Use the entered email/NIC as the stable id so the same user's
-        // applied-job list is stored under the same localStorage key every session.
-        const stableEmail = emailOrNic.includes("@") ? emailOrNic.trim().toLowerCase() : `${emailOrNic}@smartjob.lk`;
-        const fallbackUser = {
-          id: stableEmail,
-          name: emailOrNic.includes("@") ? emailOrNic.split("@")[0] : `User (${emailOrNic})`,
-          email: stableEmail,
-          nic: emailOrNic,
-          role: selectedRole,
-          address: "Colombo, Sri Lanka",
-          telephone: "077 123 4567",
-        };
-        setSuccessMessage("Login successful! Redirecting...");
-        setTimeout(() => {
-          onLoginSuccess(fallbackUser);
-        }, 500);
+        setErrorMessage("Login failed. Please check your credentials or try again later.");
       }
     } finally {
       setLoading(false);
@@ -193,66 +162,91 @@ export default function LoginPage({
     }
   };
 
-  // Complete Google sign-in with selected or entered email
-  const executeGoogleLoginWithEmail = (accountEmail, accountName) => {
-    if (!accountEmail || !accountEmail.includes("@")) {
-      setErrorMessage("Please enter a valid Google email address.");
+  // ── Real Google OAuth via GSI ──────────────────────────────────────
+  const handleGoogleLogin = () => {
+    setErrorMessage("");
+
+    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+    if (!clientId || clientId === "YOUR_GOOGLE_CLIENT_ID_HERE.apps.googleusercontent.com") {
+      setErrorMessage("Google Sign-In is not configured yet. Please add VITE_GOOGLE_CLIENT_ID to your .env file.");
       return;
     }
 
-    const finalName =
-      accountName && accountName.trim()
-        ? accountName.trim()
-        : accountEmail.split("@")[0].replace(/[._-]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+    if (!window.google?.accounts?.id) {
+      setErrorMessage("Google Sign-In library is not loaded yet. Please refresh the page and try again.");
+      return;
+    }
 
-    const googleUser = {
-      id: "google-" + accountEmail.trim().toLowerCase(),
-      name: finalName,
-      email: accountEmail.trim().toLowerCase(),
-      nic: "google-" + accountEmail.trim().toLowerCase(),
-      role: selectedRole || "job_seeker",
-      telephone: "077 123 4567",
-      address: "Colombo, Sri Lanka",
-      provider: "Google",
+    setGoogleLoading(true);
+
+    // Decode Google's JWT credential to get user info
+    const decodeJwt = (token) => {
+      try {
+        const base64 = token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/");
+        return JSON.parse(atob(base64));
+      } catch {
+        return null;
+      }
     };
 
-    // Save into remembered accounts
-    try {
-      const exists = savedGoogleAccounts.some(
-        (a) => a.email.toLowerCase() === accountEmail.trim().toLowerCase()
-      );
-      if (!exists) {
-        const updated = [{ name: finalName, email: accountEmail.trim().toLowerCase() }, ...savedGoogleAccounts];
-        setSavedGoogleAccounts(updated);
-        localStorage.setItem("smartjob_saved_google_accounts", JSON.stringify(updated));
-      }
-    } catch {}
+    window.google.accounts.id.initialize({
+      client_id: clientId,
+      callback: (response) => {
+        setGoogleLoading(false);
+        if (!response.credential) {
+          setErrorMessage("Google Sign-In was cancelled or failed. Please try again.");
+          return;
+        }
+        const payload = decodeJwt(response.credential);
+        if (!payload) {
+          setErrorMessage("Could not read Google account information. Please try again.");
+          return;
+        }
+        const googleUser = {
+          id: "google-" + payload.email,
+          name: payload.name || payload.email.split("@")[0],
+          email: payload.email,
+          picture: payload.picture || null,
+          nic: "google-" + payload.email,
+          role: selectedRole || "job_seeker",
+          telephone: "",
+          address: "Colombo, Sri Lanka",
+          provider: "Google",
+        };
+        setSuccessMessage(`Signed in as ${googleUser.name}! Redirecting...`);
+        setTimeout(() => {
+          onLoginSuccess(googleUser);
+        }, 500);
+      },
+      // Use popup mode so users don't leave the page
+      ux_mode: "popup",
+    });
 
-    setIsGoogleChooserOpen(false);
-    setSuccessMessage(`Signed in as ${googleUser.email}! Redirecting...`);
-    setTimeout(() => {
-      onLoginSuccess(googleUser);
-    }, 500);
+    window.google.accounts.id.prompt((notification) => {
+      setGoogleLoading(false);
+      if (notification.isSkippedMoment() || notification.isDismissedMoment()) {
+        // One Tap was dismissed — fall back to the full popup button flow
+        window.google.accounts.id.renderButton(
+          document.getElementById("g-signin-hidden-btn"),
+          { theme: "outline", size: "large", type: "standard" }
+        );
+        document.getElementById("g-signin-hidden-btn")?.querySelector("div[role=button]")?.click();
+      }
+    });
   };
 
-  // Social Login: Apple
+  // Social Login: Apple — opens the Apple Sign-In modal
   const handleAppleLogin = () => {
     setErrorMessage("");
-    const appleUser = {
-      id: "apple-user@icloud.com",
-      name: "Apple User",
-      email: "user@icloud.com",
-      nic: "apple-user@icloud.com",
-      role: selectedRole || "job_seeker",
-      telephone: "077 987 6543",
-      address: "Colombo, Sri Lanka",
-      provider: "Apple",
-    };
+    setShowAppleSignIn(true);
+  };
 
-    setSuccessMessage("Continuing with Apple... Redirecting!");
+  const handleAppleSuccess = (appleUser) => {
+    setShowAppleSignIn(false);
+    setSuccessMessage(`Signed in as ${appleUser.name}! Redirecting...`);
     setTimeout(() => {
-      onLoginSuccess(appleUser);
-    }, 500);
+      onLoginSuccess({ ...appleUser, role: selectedRole || "job_seeker" });
+    }, 400);
   };
 
   return (
@@ -411,27 +405,15 @@ export default function LoginPage({
               <button
                 type="button"
                 className="custom-btn-social"
-                onClick={() => setIsGoogleChooserOpen(true)}
+                onClick={handleGoogleLogin}
               >
                 <svg className="social-svg-icon" viewBox="0 0 24 24" width="20" height="20">
-                  <path
-                    fill="#4285F4"
-                    d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-                  />
-                  <path
-                    fill="#34A853"
-                    d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                  />
-                  <path
-                    fill="#FBBC05"
-                    d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
-                  />
-                  <path
-                    fill="#EA4335"
-                    d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
-                  />
+                  <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                  <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                  <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+                  <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
                 </svg>
-                <span>Continue with Google</span>
+                <span>{googleLoading ? "Opening Google..." : "Continue with Google"}</span>
               </button>
 
               <button
@@ -571,27 +553,15 @@ export default function LoginPage({
               <button
                 type="button"
                 className="custom-btn-social"
-                onClick={() => setIsGoogleChooserOpen(true)}
+                onClick={handleGoogleLogin}
               >
                 <svg className="social-svg-icon" viewBox="0 0 24 24" width="20" height="20">
-                  <path
-                    fill="#4285F4"
-                    d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-                  />
-                  <path
-                    fill="#34A853"
-                    d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                  />
-                  <path
-                    fill="#FBBC05"
-                    d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
-                  />
-                  <path
-                    fill="#EA4335"
-                    d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
-                  />
+                  <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                  <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                  <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+                  <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
                 </svg>
-                <span>Continue with Google</span>
+                <span>{googleLoading ? "Opening Google..." : "Continue with Google"}</span>
               </button>
 
               <button
@@ -615,144 +585,16 @@ export default function LoginPage({
         </div>
       </div>
 
-      {/* ======================================================== */}
-      {/* GOOGLE ACCOUNT CHOOSER MODAL (Select or Enter any email) */}
-      {/* ======================================================== */}
-      {isGoogleChooserOpen && (
-        <div
-          className="google-chooser-overlay"
-          onClick={() => setIsGoogleChooserOpen(false)}
-        >
-          <div
-            className="google-chooser-card"
-            onClick={(e) => e.stopPropagation()}
-            role="dialog"
-            aria-modal="true"
-            aria-label="Sign in with Google"
-          >
-            <button
-              type="button"
-              className="google-chooser-close"
-              onClick={() => setIsGoogleChooserOpen(false)}
-              aria-label="Close"
-            >
-              <X size={18} />
-            </button>
+      {/* Hidden div for GSI renderButton fallback */}
+      <div id="g-signin-hidden-btn" style={{ position: "absolute", opacity: 0, pointerEvents: "none", width: 0, height: 0, overflow: "hidden" }} />
 
-            {/* Google Header */}
-            <div className="google-chooser-header">
-              <svg className="google-g-logo" viewBox="0 0 24 24" width="28" height="28">
-                <path
-                  fill="#4285F4"
-                  d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-                />
-                <path
-                  fill="#34A853"
-                  d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                />
-                <path
-                  fill="#FBBC05"
-                  d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
-                />
-                <path
-                  fill="#EA4335"
-                  d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
-                />
-              </svg>
-              <h3>Sign in with Google</h3>
-              <p>Choose an account to continue to SmartJob</p>
-            </div>
-
-            {/* List of Selectable Accounts */}
-            <div className="google-accounts-list">
-              {savedGoogleAccounts.map((acc) => (
-                <button
-                  key={acc.email}
-                  type="button"
-                  className="google-account-item"
-                  onClick={() => executeGoogleLoginWithEmail(acc.email, acc.name)}
-                >
-                  <div className="google-avatar-circle">
-                    {(acc.name || acc.email).charAt(0).toUpperCase()}
-                  </div>
-                  <div className="google-account-info">
-                    <strong className="google-acc-name">{acc.name}</strong>
-                    <span className="google-acc-email">{acc.email}</span>
-                  </div>
-                </button>
-              ))}
-            </div>
-
-            {/* Use Another Account / Custom Email Accordion */}
-            <div className="google-custom-section">
-              {!showCustomGoogleForm ? (
-                <button
-                  type="button"
-                  className="btn-use-another-account"
-                  onClick={() => setShowCustomGoogleForm(true)}
-                >
-                  <PlusCircle size={18} />
-                  <span>Use another email address</span>
-                </button>
-              ) : (
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    executeGoogleLoginWithEmail(customGoogleEmail, customGoogleName);
-                  }}
-                  className="custom-google-form"
-                >
-                  <div className="custom-input-group">
-                    <label htmlFor="custom-g-email" className="custom-label">
-                      Enter your Google Email *
-                    </label>
-                    <input
-                      id="custom-g-email"
-                      type="email"
-                      className="custom-input"
-                      placeholder="e.g. yourname@gmail.com"
-                      value={customGoogleEmail}
-                      onChange={(e) => setCustomGoogleEmail(e.target.value)}
-                      required
-                      autoFocus
-                    />
-                  </div>
-
-                  <div className="custom-input-group">
-                    <label htmlFor="custom-g-name" className="custom-label">
-                      Your Full Name (Optional)
-                    </label>
-                    <input
-                      id="custom-g-name"
-                      type="text"
-                      className="custom-input"
-                      placeholder="e.g. Kasun Perera"
-                      value={customGoogleName}
-                      onChange={(e) => setCustomGoogleName(e.target.value)}
-                    />
-                  </div>
-
-                  <div className="google-form-actions">
-                    <button
-                      type="button"
-                      className="btn-cancel-custom-g"
-                      onClick={() => setShowCustomGoogleForm(false)}
-                    >
-                      Back to list
-                    </button>
-                    <button type="submit" className="btn-submit-custom-g">
-                      Continue with this Email
-                    </button>
-                  </div>
-                </form>
-              )}
-            </div>
-
-            <div className="google-chooser-footer">
-              <span>To continue, Google will share your name and email with SmartJob.</span>
-            </div>
-          </div>
-        </div>
+      {/* Apple Sign-In Modal */}
+      {showAppleSignIn && (
+        <AppleSignIn
+          onSuccess={handleAppleSuccess}
+          onClose={() => setShowAppleSignIn(false)}
+          selectedRole={selectedRole}
+        />
       )}
     </div>
   );

@@ -331,29 +331,20 @@ export async function applyForJob(id, applicationData) {
 }
 
 /**
- * Fetch all registered users
- */
-export async function getUsers() {
-  const response = await fetch(`${API_BASE}/api/users`);
-
-  if (!response.ok) {
-    throw new Error(`Failed to load users (status ${response.status})`);
-  }
-
-  return response.json();
-}
-
-/**
  * Register a new user
  */
 export async function registerUser(userData) {
-  const response = await fetch(`${API_BASE}/api/users/register`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(userData)
-  });
+  let response;
+  try {
+    response = await fetch(`${API_BASE}/api/users/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(userData),
+      signal: AbortSignal.timeout(8000)
+    });
+  } catch (err) {
+    throw new Error("Cannot connect to server. Please make sure the backend is running.");
+  }
 
   const data = await response.json();
 
@@ -368,13 +359,17 @@ export async function registerUser(userData) {
  * Login user
  */
 export async function loginUser(credentials) {
-  const response = await fetch(`${API_BASE}/api/users/login`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(credentials)
-  });
+  let response;
+  try {
+    response = await fetch(`${API_BASE}/api/users/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(credentials),
+      signal: AbortSignal.timeout(8000)
+    });
+  } catch (err) {
+    throw new Error("Cannot connect to server. Please make sure the backend is running.");
+  }
 
   const data = await response.json();
 
